@@ -162,13 +162,13 @@ nav{
   display: flex;
   height: fit-content;
   align-items: center;
-  border-radius: 7px;
+  border-radius: 20px;
   box-shadow: 0 0 8px -1px white;
 }
 .search-bar-input{
   height: 35px;
-  border-top-left-radius: 7px;
-  border-bottom-left-radius: 7px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
   background: var(--alt-two-color);
   padding-left: 20px;
   border: 2px solid white;
@@ -190,8 +190,8 @@ nav{
   border: 2px solid white;
   border-left: none;
   background: var(--alt-one-color);
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 .search-icon{
   height: 20px;

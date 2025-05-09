@@ -17,6 +17,16 @@ export default {
     <img class="menu-icon" :src="menu" alt="">
     <span>Catalogue</span>
   </div>
+  <div class="main-catalog">
+    <div class="highlights">
+      <div class="une">
+
+      </div>
+      <div class="top">
+
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -44,5 +54,9 @@ export default {
   color: white;
   padding: 5px;
   height: fit-content;
+}
+.main-catalog{
+  display: flex;
+  flex-direction: row;
 }
 </style>
