@@ -24,6 +24,7 @@ export default {
 }
 .main-container{
   height: 800px;
+  width: 100%;
   margin: auto;
 }
 .footer{
