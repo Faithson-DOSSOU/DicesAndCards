@@ -12,12 +12,13 @@ export default {
 </script>
 
 <template>
-  <div class="event-page">
-    <div></div>
-    <p class="page-title">Evènements</p>
-    <div class="event-slider">
-      <div class="slider-wrapper">
-        <img class="event-cover" :src="event" alt="">
+  <div class="event-page main-container">
+    <div class="event-page-wrapper">
+      <h1 class="page-title">Evènements</h1>
+      <div class="event-slider">
+        <div class="slider-wrapper">
+          <img class="event-cover" :src="event" alt="">
+        </div>
       </div>
     </div>
   </div>
@@ -36,8 +37,16 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.event-page-wrapper{
+  margin: 20px 0;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
 .page-title{
+  margin: 30px 100px;
   font-size: 25px;
+  font-weight: 600;
 }
 .event-slider{
   width: 1000px;
