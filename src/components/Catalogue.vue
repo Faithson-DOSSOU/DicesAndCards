@@ -1,13 +1,21 @@
 <script>
-//import menu from '../assets/svg/menu-svgrepo-com.svg';
-import filter from '../assets/svg/filter-alt-1-svgrepo-com.svg';
+import FilterSideBar from "./FilterSideBar.vue";
+import ProfilePanel from "./ProfilePanel.vue";
+
+import filter from "../assets/svg/filter-alt-1-svgrepo-com.svg";
 
 export default {
+  components : {ProfilePanel, FilterSideBar},
   name : 'Catalogue',
   data() {
     return {
-      //menu,
-      filter
+      filter,
+      showFilterSidebar: false
+    }
+  },
+  methods: {
+    toggleFilterSidebar() {
+      this.showFilterSidebar = !this.showFilterSidebar;
     }
   }
 };
@@ -15,12 +23,8 @@ export default {
 
 <template>
 <div class="catalog-page">
-  <!--<div class="page-topper">
-    <img class="menu-icon" :src="menu" alt="">
-    <span>Catalogue</span>
-  </div>-->
   <div class="filter-sidebar">
-
+    <FilterSideBar :isVisible="showFilterSidebar" @click="toggleFilterSidebar"/>
   </div>
   <div class="main-catalog">
     <div class="highlights">
@@ -41,27 +45,16 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-.page-topper{
-  height: 40px;
-  width: 100%;
-  background: #5a5a5a;
+.catalog-page{
   display: flex;
+  width: 100%;
   flex-direction: row;
-  align-items: center;
-  padding: 0 10px;
+  justify-content: center;
+  margin-top: 50px;
 }
-/*.menu-icon{
-  height: 30px;
-  width: 30px;
-  margin: 5px;
-}
-.page-topper span{
-  color: white;
-  padding: 5px;
-  height: fit-content;
-}*/
 .main-catalog{
   display: flex;
   flex-direction: row;
+  width: 1000px;
 }
 </style>
