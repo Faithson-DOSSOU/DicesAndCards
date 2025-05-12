@@ -23,7 +23,7 @@ export default {
   box-sizing: border-box;
 }
 .main-container{
-  height: 800px;
+  min-height: 800px;
   width: 100%;
   margin: auto;
 }
