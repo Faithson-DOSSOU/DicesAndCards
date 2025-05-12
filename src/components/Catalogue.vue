@@ -1,11 +1,13 @@
 <script>
-import menu from '../assets/svg/menu-svgrepo-com.svg';
+//import menu from '../assets/svg/menu-svgrepo-com.svg';
+import filter from '../assets/svg/filter-alt-1-svgrepo-com.svg';
 
 export default {
   name : 'Catalogue',
   data() {
     return {
-      menu
+      //menu,
+      filter
     }
   }
 };
@@ -13,9 +15,12 @@ export default {
 
 <template>
 <div class="catalog-page">
-  <div class="page-topper">
+  <!--<div class="page-topper">
     <img class="menu-icon" :src="menu" alt="">
     <span>Catalogue</span>
+  </div>-->
+  <div class="filter-sidebar">
+
   </div>
   <div class="main-catalog">
     <div class="highlights">
@@ -45,7 +50,7 @@ export default {
   align-items: center;
   padding: 0 10px;
 }
-.menu-icon{
+/*.menu-icon{
   height: 30px;
   width: 30px;
   margin: 5px;
@@ -54,7 +59,7 @@ export default {
   color: white;
   padding: 5px;
   height: fit-content;
-}
+}*/
 .main-catalog{
   display: flex;
   flex-direction: row;
