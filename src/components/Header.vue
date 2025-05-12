@@ -3,12 +3,15 @@ import Home from './Home.vue';
 import About from './About.vue';
 import Events from './Events.vue';
 import Catalogue from "./Catalogue.vue";
+
 import LanguagePanel from "./LanguagePanel.vue";
+import ProfilePanel from "./ProfilePanel.vue";
+
 import logo from '../assets/svg/dices_and_cards_logo.svg'
 import dropdown from '../assets/svg/dropdown-arrow-svgrepo-com.svg'
 import search from '../assets/svg/search-svgrepo-com.svg';
 import profile from '../assets/svg/profile-svgrepo-com (1).svg';
-import ProfilePanel from "./ProfilePanel.vue";
+
 export default {
   components: {ProfilePanel, Home, About, Events, Catalogue, LanguagePanel},
   name: 'Header',
@@ -26,12 +29,6 @@ export default {
     }
   },
   methods: {
-    /*switchActive(index) {
-      let navList = document.getElementsByClassName("active");
-      navList[this.currentActiveIndex].classList.remove("active");
-      let newActive = document.getElementsByClassName("nav-link-wrapper")[index];
-      newActive.classList.add("active");
-    }*/
     toggleLanguagePanel(event) {
       if (event.type === 'mouseleave') {
         this.showLanguagePanel = false;
@@ -175,10 +172,7 @@ nav{
   color: white;
 }
 .search-bar-input::placeholder{
-  //padding-left: 20px;
   font-family: Verdana, sans-serif;
-  //font-weight: 100;
-  //opacity: 80%;
   color: white;
 }
 .search-bar-button{
@@ -214,7 +208,6 @@ nav{
 .lang-switch:hover{
   border: 2px solid white;
   box-shadow: 0 0 8px -1px white;
-  //opacity: 70%;
   border-radius: 10px;
 }
 .selected-language{
@@ -248,7 +241,6 @@ nav{
 .profile-button:hover{
   border: 2px solid white;
   box-shadow: 0 0 8px -3px white;
-  //border-radius: 10px;
 }
 .profile-icon{
   height: 20px;

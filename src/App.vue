@@ -1,9 +1,9 @@
 <script>
 import { computed } from 'vue';
 import { useUserStore } from './stores/user.js';
+import { getActivePinia } from 'pinia';
 
 import Dashboard from './components/Dashboard.vue';
-import {getActivePinia} from 'pinia';
 import DefaultLayout from "./components/DefaultLayout.vue";
 
 export default {
