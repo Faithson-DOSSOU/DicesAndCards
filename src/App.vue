@@ -47,7 +47,7 @@ body{
   min-height: 100vh;
 }
 :root{
-  --main-color: #8a2be2;
+  --main-color: blueviolet;
   --alt-one-color: #4e4e4e;
   --alt-two-color: #6C3C98;
 
