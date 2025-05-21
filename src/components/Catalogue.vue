@@ -6,22 +6,22 @@ import ProfilePanel from "./ProfilePanel.vue";
 
 import filter from "../assets/svg/filter-alt-1-svgrepo-com.svg";
 import CatalogueHeader from "./CatalogueHeader.vue";
+import CatalogContent from "./CatalogContent.vue";
 
 export default {
-  components : {CatalogueHeader, ProfilePanel, FilterSideBar},
+  components : {CatalogContent, CatalogueHeader, ProfilePanel, FilterSideBar},
   name : 'Catalogue',
   data() {
     return {
       filter,
       showFilterSidebar: null,
-      jeux: [],
     }
   },
   methods: {
     sideBarToggle(message){
       this.showFilterSidebar= message;
       console.log("Sidebar toggled !");
-      console.log(this.jeux)
+
     }
   },
   mounted() {
@@ -46,9 +46,7 @@ export default {
       <FilterSideBar :isVisible="showFilterSidebar"/>
     </aside>
     <main class="main-catalog">
-      <div class="main-catalog-wrapper">
-        lorem ipsum
-      </div>
+      <CatalogContent/>
     </main>
   </div>
 </div>
@@ -83,10 +81,5 @@ export default {
   flex-direction: row;
   justify-content: center;
   width: 1229.2px;
-}
-.main-catalog-wrapper{
-  display: flex;
-  flex-direction: row;
-  width: 1000px;
 }
 </style>
