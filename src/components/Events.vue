@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios';
+
 import event from '../assets/png/events_bg.png';
 import event2 from '../assets/png/events_bg2.png';
 import chevronleft from '../assets/svg/chevron-left-svgrepo-com 2.svg';

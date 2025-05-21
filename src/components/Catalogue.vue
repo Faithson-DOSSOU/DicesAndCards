@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios';
+
 import FilterSideBar from "./FilterSideBar.vue";
 import ProfilePanel from "./ProfilePanel.vue";
 
@@ -12,13 +14,24 @@ export default {
     return {
       filter,
       showFilterSidebar: null,
+      jeux: [],
     }
   },
   methods: {
     sideBarToggle(message){
       this.showFilterSidebar= message;
       console.log("Sidebar toggled !");
+      console.log(this.jeux)
     }
+  },
+  mounted() {
+    axios.get('http://localhost:3000/api/jeux')
+        .then(response => {
+          this.jeux = response.data;
+        })
+        .catch(error => {
+          console.error("Erreur lors du chargement des jeux :", error);
+        });
   }
 };
 </script>
