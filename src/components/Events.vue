@@ -29,6 +29,15 @@ export default {
         day: 'numeric'
       });
     }
+  },
+  mounted() {
+    axios.get('http://localhost:3000/api/evenements')
+        .then(response => {
+          this.eventlist = response.data;
+        })
+        .catch(error => {
+          console.error("Erreur lors du chargement des evenements :", error);
+        });
   }
 };
 </script>
