@@ -16,7 +16,7 @@ export default {
   <div class="visible" v-if="isVisible">
     <div class="sidebar-title">
       <img class="filter-icon" :src="filter" alt="">
-      <span>Filtres</span>
+      <span>Filtrer par</span>
     </div>
     <form class="filter-list">
       <fieldset>
@@ -75,37 +75,29 @@ export default {
       </fieldset>
     </form>
   </div>
-  <div v-else>
-    <img class="filter-icon" :src="filter" alt="">
-  </div>
 </div>
 </template>
 
 <style scoped>
-.filter-sidebar{
-}
 .filter-sidebar .visible{
-  height: 800px;
-  width: 250px;
-  box-shadow: 0 0 10px #bfbfbf;
-  border-radius: 20px;
+  height: fit-content;
+  width: 300px;
 }
 .sidebar-title{
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
   width: 100%;
-  height: 40px;
-  padding: 0 0 0 20px;
+  height: 38px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: blueviolet;
+  justify-content: center;
+  background: #D9D9D9;
 }
 .filter-icon{
   height: 25px;
   width: 25px;
 }
 .sidebar-title span{
+  color: #4E4E4E;
   padding-left: 10px;
 }
 </style>
