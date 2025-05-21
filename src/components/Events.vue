@@ -10,6 +10,8 @@ export default {
   name : 'Events',
   data() {
     return {
+      eventlist: [],
+      currentEvent: null,
       event,
       event2,
       chevronleft,

@@ -23,6 +23,7 @@ export default {
 <template class="main-catalog">
   <div class="main-catalog-wrapper">
     <div v-for="jeu in jeux" :key="jeu.id_jeu" class="jeu-card">
+      <img :src="jeu.image_path" alt="">
       <h3>{{ jeu.nom }}</h3>
       <p><strong>Âge minimum :</strong> {{ jeu.age_min }} ans</p>
       <p><strong>Durée :</strong> {{ jeu.temps_de_jeu }} minutes</p>
@@ -39,7 +40,7 @@ export default {
   box-sizing: border-box;
 }
 .main-catalog-wrapper{
-  width: 1000px;
+  width: 1200px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -50,8 +51,12 @@ export default {
   border-radius: 10px;
   padding: 15px;
   margin: 10px;
-  width: 300px;
+  width: 350px;
   background-color: #f9f9f9;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+.jeu-card img{
+  height: 350px;
+  width: 300px;
 }
 </style>

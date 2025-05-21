@@ -163,7 +163,7 @@ export default {
 .hero-section {
   position: relative;
   width: 100%;
-  height: 60vh;
+  height: 645px;
   background-image: url('../assets/png/bg.jpg');
   background-size: cover;
   background-position: center;
