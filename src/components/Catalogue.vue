@@ -3,19 +3,21 @@ import FilterSideBar from "./FilterSideBar.vue";
 import ProfilePanel from "./ProfilePanel.vue";
 
 import filter from "../assets/svg/filter-alt-1-svgrepo-com.svg";
+import CatalogueHeader from "./CatalogueHeader.vue";
 
 export default {
-  components : {ProfilePanel, FilterSideBar},
+  components : {CatalogueHeader, ProfilePanel, FilterSideBar},
   name : 'Catalogue',
   data() {
     return {
       filter,
-      showFilterSidebar: false
+      showFilterSidebar: null,
     }
   },
   methods: {
-    toggleFilterSidebar() {
-      this.showFilterSidebar = !this.showFilterSidebar;
+    sideBarToggle(message){
+      this.showFilterSidebar= message;
+      console.log("Sidebar toggled !");
     }
   }
 };
@@ -23,18 +25,23 @@ export default {
 
 <template>
 <div class="catalog-page">
-  <div class="filter-sidebar">
-    <FilterSideBar :isVisible="showFilterSidebar" @click="toggleFilterSidebar"/>
+  <div class="catalog-header">
+    <CatalogueHeader @toggleFilterSidebar="sideBarToggle"/>
   </div>
-  <div class="main-catalog">
-    <div class="highlights">
-      <div class="une">
+  <div class="catalog-body">
+    <aside class="filter-sidebar">
+      <FilterSideBar :isVisible="showFilterSidebar"/>
+    </aside>
+    <main class="main-catalog">
+      <div class="highlights">
+        <div class="une">
 
-      </div>
-      <div class="top">
+        </div>
+        <div class="top">
 
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 </template>
@@ -48,9 +55,12 @@ export default {
 .catalog-page{
   display: flex;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 50px;
+}
+.catalog-body{
+  display: flex;
+  flex-direction: row;
 }
 .main-catalog{
   display: flex;
