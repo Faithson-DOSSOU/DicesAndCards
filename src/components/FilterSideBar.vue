@@ -95,7 +95,6 @@ export default {
   height: fit-content;
   width: fit-content;
   padding: 0 20px;
-  font-family: "Century Gothic", sans-serif;
   border-right: 2px solid #d8d8d8;
 }
 .filter-list{
