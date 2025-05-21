@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios';
 
 import event from '../assets/png/events_bg.png';
 import event2 from '../assets/png/events_bg2.png';
@@ -10,8 +9,6 @@ export default {
   name : 'Events',
   data() {
     return {
-      eventlist: [],
-      currentEvent: null,
       event,
       event2,
       chevronleft,
@@ -29,15 +26,6 @@ export default {
         day: 'numeric'
       });
     }
-  },
-  mounted() {
-    axios.get('http://localhost:3000/api/evenements')
-        .then(response => {
-          this.eventlist = response.data;
-        })
-        .catch(error => {
-          console.error("Erreur lors du chargement des evenements :", error);
-        });
   }
 };
 </script>
@@ -124,7 +112,6 @@ export default {
 }
 .event-page{
   width: 100%;
-  //margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
