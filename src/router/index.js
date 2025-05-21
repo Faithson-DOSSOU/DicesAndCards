@@ -10,6 +10,7 @@ import Home from '../components/Home.vue';
 import About from '../components/About.vue';
 import Events from '../components/Events.vue';
 import Catalogue from "../components/Catalogue.vue";
+import ReservationForm from "../components/ReservationForm.vue";
 
 const routes = [
     {
@@ -44,6 +45,13 @@ const routes = [
         name : 'Home',
         component : Home,
     },
+    {
+        path: '/reservation/:jeuId',
+        name: 'ReservationForm',
+        component : ReservationForm,
+        props: true
+    },
+
     {
         path : '/About',
         name : 'About',
