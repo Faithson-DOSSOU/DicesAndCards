@@ -1,11 +1,20 @@
 <script>
-import filter from '../assets/svg/filter-alt-1-svgrepo-com.svg';
+import dropdown from '../assets/svg/chevron-up-svgrepo-com.svg';
+import dropdown2 from '../assets/svg/chevron-down-svgrepo-com.svg';
 export default {
   name: 'FilterSideBar',
   props: ['isVisible'],
   data() {
     return {
-      filter
+      dropdown,
+      dropdown2,
+      showDropdownContent: {1:true, 2:true}
+    }
+  },
+  methods: {
+    toggleDropdown(number){
+      this.showDropdownContent[number] = !this.showDropdownContent[number];
+      console.log("Dropdown", number, "toggled")
     }
   }
 }
@@ -14,90 +23,115 @@ export default {
 <template>
 <div class="filter-sidebar">
   <div class="visible" v-if="isVisible">
-    <div class="sidebar-title">
-      <img class="filter-icon" :src="filter" alt="">
-      <span>Filtrer par</span>
+    <div class="filter-list">
+      <div class="filter-list-title">
+        <b>Catégories de Jeu</b>
+        <img v-if="showDropdownContent[1]" class="filter-dropdown" :src="dropdown" alt="" @click="toggleDropdown(1)">
+        <img v-else class="filter-dropdown" :src="dropdown2" alt="" @click="toggleDropdown(1)">
+      </div>
+      <div v-if="showDropdownContent[1]">
+        <form class="filter-form" action="">
+          <div class="form-element">
+            <input id="category-one" class="checkbox" type="checkbox">
+            <label for="category-one" class="checkbox-label">Category 1</label>
+          </div>
+          <div class="form-element">
+            <input id="category-two" class="checkbox" type="checkbox">
+            <label for="category-two" class="checkbox-label">Category 2</label>
+          </div>
+          <div  class="form-element">
+            <input id="category-three" class="checkbox" type="checkbox">
+            <label for="category-three" class="checkbox-label">Category 3</label>
+          </div>
+          <div class="form-element">
+            <input id="category-four" class="checkbox" type="checkbox">
+            <label for="category-four" class="checkbox-label">Category 4</label>
+          </div>
+          <div class="form-element">
+            <input id="category-five" class="checkbox" type="checkbox">
+            <label for="category-five" class="checkbox-label">Category 5</label>
+          </div>
+        </form>
+      </div>
     </div>
-    <form class="filter-list">
-      <fieldset>
-        <legend>Catégories</legend>
-        <div>
-          <label for="Category1">Category1</label>
-          <input id="Category1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Category2">Category2</label>
-          <input id="Category2" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Category3">Category3</label>
-          <input id="Category1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Category3">Category3</label>
-          <input id="Category1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Category4">Category4</label>
-          <input id="Category1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Category5">Category5</label>
-          <input id="Category5" type="checkbox"/>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Mechaniques</legend>
-        <div>
-          <label for="Mechanic1">Mechanic1</label>
-          <input id="Mechanic1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Mechanic2">Mechanic2</label>
-          <input id="Mechanic2" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Mechanic3">Mechanic3</label>
-          <input id="Mechanic1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Mechanic3">Mechanic3</label>
-          <input id="Mechanic1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Mechanic4">Mechanic4</label>
-          <input id="Mechanic1" type="checkbox"/>
-        </div>
-        <div>
-          <label for="Mechanic5">Mechanic5</label>
-          <input id="Mechanic5" type="checkbox"/>
-        </div>
-      </fieldset>
-    </form>
+    <div class="filter-list">
+      <div class="filter-list-title">
+        <b>Mécaniques de Jeu</b>
+        <img v-if="showDropdownContent[2]" class="filter-dropdown" :src="dropdown" alt="" @click="toggleDropdown(2)">
+        <img v-else class="filter-dropdown" :src="dropdown2" alt="" @click="toggleDropdown(2)">
+      </div>
+      <div v-if="showDropdownContent[2]">
+        <form class="filter-form" action="">
+          <div class="form-element">
+            <input id="mechanic-one" class="checkbox" type="checkbox">
+            <label for="mechanic-one" class="checkbox-label">Mechanique 1</label>
+          </div>
+          <div class="form-element">
+            <input id="mechanic-two" class="checkbox" type="checkbox">
+            <label for="mechanic-two" class="checkbox-label">Mécanique 2</label>
+          </div>
+          <div  class="form-element">
+            <input id="mechanic-three" class="checkbox" type="checkbox">
+            <label for="mechanic-three" class="checkbox-label">Mécanique 3</label>
+          </div>
+          <div class="form-element">
+            <input id="mechanic-four" class="checkbox" type="checkbox">
+            <label for="mechanic-four" class="checkbox-label">Mécanique 4</label>
+          </div>
+          <div class="form-element">
+            <input id="mechanic-five" class="checkbox" type="checkbox">
+            <label for="mechanic-five" class="checkbox-label">Mécanique 5</label>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 </template>
 
 <style scoped>
 .filter-sidebar .visible{
+  margin-top: 20px;
   height: fit-content;
-  width: 300px;
+  width: fit-content;
+  padding: 0 20px;
+  font-family: "Century Gothic", sans-serif;
+  border-right: 2px solid #d8d8d8;
 }
-.sidebar-title{
+.filter-list{
+  width: 250px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #d8d8d8;
+}
+.filter-list-title{
   width: 100%;
-  height: 38px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  background: #D9D9D9;
+  justify-content: space-between;
+  font-size: 17px;
 }
-.filter-icon{
-  height: 25px;
-  width: 25px;
+.filter-dropdown{
+  height: 30px;
+  width: 30px;
 }
-.sidebar-title span{
-  color: #4E4E4E;
-  padding-left: 10px;
+.form-element{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+.checkbox{
+  height: 20px;
+  width: 20px;
+  border-radius: 3px;
+  margin-right: 10px;
+  appearance: auto;
+  cursor: pointer;
+}
+.checkbox-label{
+  color: #555555;
 }
 </style>

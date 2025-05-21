@@ -33,13 +33,8 @@ export default {
       <FilterSideBar :isVisible="showFilterSidebar"/>
     </aside>
     <main class="main-catalog">
-      <div class="highlights">
-        <div class="une">
-
-        </div>
-        <div class="top">
-
-        </div>
+      <div class="main-catalog-wrapper">
+        lorem ipsum
       </div>
     </main>
   </div>
@@ -56,13 +51,27 @@ export default {
   display: flex;
   width: 100%;
   flex-direction: column;
+  align-items: center;
+}
+.catalog-header{
+  display: flex;
   justify-content: center;
+  width: 100%;
+  background: #4E4E4E;
 }
 .catalog-body{
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  width: 1520.8px;
 }
 .main-catalog{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 1229.2px;
+}
+.main-catalog-wrapper{
   display: flex;
   flex-direction: row;
   width: 1000px;

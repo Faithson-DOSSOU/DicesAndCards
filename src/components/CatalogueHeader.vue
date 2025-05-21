@@ -19,19 +19,18 @@ export default {
 </script>
 
 <template>
-  <div class="catalog-header">
+  <div class="catalog-inner-header">
     <img id="menu-icon" :src="menu" alt="" @click="toggleFilterSidebar">
     <span id="catalogue-page-title">Catalogue</span>
   </div>
 </template>
 
 <style scoped>
-.catalog-header{
+.catalog-inner-header{
   display: flex;
   align-items: center;
-  width: 100%;
   height: 42px;
-  background: #4E4E4E;
+  width: 1520px;
 }
 #menu-icon {
   height: 30px;
@@ -40,6 +39,6 @@ export default {
 }
 #catalogue-page-title{
   color: white;
-  font-size: 18px;
+  font-size: 16px;
 }
 </style>
