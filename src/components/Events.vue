@@ -49,32 +49,32 @@ export default {
 }
 .event-page{
   width: 100%;
-  margin-top: 50px;
+  //margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #1c1c1c;
 }
 .event-page-wrapper{
-  margin: 20px 0;
   width: 1200px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .event-slider-container{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   width: 1200px;
-  height: 600px;
+  height: 525px;
 }
 .event-slider{
   display: flex;
   flex-direction: column;
   width: 1100px;
   align-items: center;
-  height: 600px;
+  height: 525px;
   flex-wrap: wrap;
   overflow: hidden;
   border: 3px solid white;
@@ -86,7 +86,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   width: 1100px;
-  height: 600px;
+  height: 525px;
   border-radius: 50px;
   overflow: hidden;
 }
@@ -109,11 +109,12 @@ export default {
   width: 50px;
 }
 .inscription-button{
+  margin-top: 20px;
   width: fit-content;
   height: fit-content;
   padding: 10px 20px;
   background: blueviolet;
-  border: 2px solid white;
+  border: none;
   color: white;
   font-family: Verdana, sans-serif;
   display: flex;
@@ -121,10 +122,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 40px;
-  position: absolute;
-  margin-top: 475px;
-  margin-left: 800px;
-  box-shadow: 0 0 20px black;
+  box-shadow: 0 0 2px black;
 }
 .inscription-icon{
   height: 20px;
