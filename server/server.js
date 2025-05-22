@@ -125,6 +125,56 @@ app.get('/api/jeux', async (req, res) => {
     }
 })
 
+app.get('/api/jeux/:id', async (req, res) => {
+    const jeuId = req.params.id;
+
+    try {
+        const [rows] = await pool.query('SELECT * FROM Jeu WHERE id_jeu = ?', [jeuId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Jeu non trouvé' });
+        }
+
+        res.json(rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur lors de la récupération du jeu' });
+    }
+});
+
+
+app.post('/api/reserver', async (req, res) => {
+    const { id_utilisateur, id_jeu, id_table, date_debut, date_fin } = req.body;
+
+    try {
+        const [rows] = await pool.query(
+            `CALL louer_jeu(?, ?, ?, ?, ?)`,
+            [id_utilisateur, id_jeu, id_table, date_debut, date_fin]
+        );
+
+        res.status(200).json({ message: 'Réservation réussie' });
+    } catch (error) {
+        console.error('Erreur lors de la réservation :', error);
+
+        // Gestion des signaux SQLSTATE personnalisés
+        if (error.code === 'ER_SIGNAL_EXCEPTION') {
+            res.status(400).json({ message: error.sqlMessage });
+        } else {
+            res.status(500).json({ message: 'Erreur serveur' });
+        }
+    }
+});
+
+app.get('/api/tables', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM TableJeu')
+        res.json(rows)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: 'Erreur serveur' })
+    }
+})
+
 app.get('/api/evenements', async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM Evenement')
@@ -152,7 +202,7 @@ app.get('/api/evenements/en-cours', async (req, res) => {
         const [rows] = await pool.query(`
             SELECT * FROM Evenement
             WHERE statut = 'en_cours'
-            --  AND CURRENT_DATE() BETWEEN date_debut AND date_fin
+              AND CURRENT_DATE() BETWEEN date_debut AND date_fin
             ORDER BY date_debut ASC
         `);
         res.json(rows);
@@ -161,6 +211,21 @@ app.get('/api/evenements/en-cours', async (req, res) => {
         res.status(500).json({ error: 'Erreur serveur' });
     }
 });
+
+app.get('/api/admin/evenements', async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT * FROM Evenement
+            WHERE statut IN ('à_venir', 'en_cours')
+            ORDER BY date_debut ASC
+        `);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
 
 app.post('/api/evenements/inscription', async (req, res) => {
     const { id_utilisateur, id_evenement } = req.body;
@@ -189,6 +254,25 @@ app.post('/api/evenements/inscription', async (req, res) => {
     }
 });
 
+app.put('/api/evenements/:id/terminer', async (req, res) => {
+    const id_evenement = req.params.id;
+
+    try {
+        const [result] = await pool.query(
+            `UPDATE Evenement SET statut = 'termine' WHERE id_evenement = ?`,
+            [id_evenement]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Événement non trouvé' });
+        }
+
+        res.status(200).json({ message: 'Événement marqué comme terminé' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erreur lors de la suppression (logique) de l’événement.' });
+    }
+});
 
 
 // Démarrage du serveur

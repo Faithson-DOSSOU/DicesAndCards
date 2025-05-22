@@ -72,6 +72,8 @@ export default {
           } else {
             this.router.push('/Home');
           }
+          /*localStorage.setItem('user', JSON.stringify(response.data.user));
+          localStorage.setItem('userId', response.data.user.id_utilisateur);*/
         }
       } catch (error) {
         this.message = 'Email ou mot de passe incorrect';

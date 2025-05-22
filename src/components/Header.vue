@@ -26,6 +26,7 @@ export default {
       showLanguagePanel: false,
       showProfilePanel: false,
       isLoggedIn: false,
+      searchQuery: '',
     }
   },
   methods: {
@@ -42,6 +43,9 @@ export default {
       } else {
         this.showProfilePanel = !this.showProfilePanel;
       }
+    },
+    goToCatalogue() {
+      this.$router.push({ path: '/Catalogue', query: { search: this.searchQuery } });
     }
   }
 };
@@ -59,9 +63,10 @@ export default {
           <li class="nav-link-wrapper"><router-link active-class="active" to="/About"  class="nav-link">À propos</router-link></li>
         </ul>
       </nav>
-      <form class="search-bar" action="/renvoie-les-données-vers-une-page-de-traitement" method="post">
-        <input class="search-bar-input" type="text" placeholder="Rechercher...">
-        <button class="search-bar-button" type="button"><img class="search-icon" :src="search" alt=""></button>
+      <!--Je veux que ma barre de recherche fonctionne. C'est à dire que ça me permette de rechercher des jeux sur la page catalogue -->
+      <form class="search-bar" action="" method="post"  @submit.prevent="goToCatalogue">
+        <input v-model="searchQuery" class="search-bar-input" type="text" placeholder="Rechercher...">
+        <button class="search-bar-button" type="submit"><img class="search-icon" :src="search" alt=""></button>
       </form>
       <div class="header-inner-wrapper">
         <div class="lang-toggle" @click.prevent="toggleLanguagePanel" @mouseleave="toggleLanguagePanel">

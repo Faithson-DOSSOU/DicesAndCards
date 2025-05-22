@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
+    persist: true, // 🔥 ceci active la persistance
+
     state: () => ({
-        role: 'player',
+        id_utilisateur: null,
         nom: '',
         prenom: '',
-        email: ''
+        email: '',
+        role: 'player'
     }),
 
     getters: {
@@ -17,28 +20,20 @@ export const useUserStore = defineStore('user', {
             this.role = newRole
         },
 
-        // ✅ Nouvelle méthode pour tout enregistrer depuis le backend
         setUser(user) {
-            this.nom = user.nom
-            this.prenom = user.prenom
-            this.email = user.email
-            this.role = user.role || 'player'
-        },
-
-        // Exemples de méthodes manuelles
-        loginAsPlayer() {
-            this.setRole('player')
-        },
-
-        loginAsAdmin() {
-            this.setRole('admin')
+            this.id_utilisateur = user.id_utilisateur;
+            this.nom = user.nom;
+            this.prenom = user.prenom;
+            this.email = user.email;
+            this.role = user.role || 'player';
         },
 
         logout() {
-            this.nom = ''
-            this.prenom = ''
-            this.email = ''
-            this.role = 'player'
+            this.id_utilisateur = null;
+            this.nom = '';
+            this.prenom = '';
+            this.email = '';
+            this.role = 'player';
         }
     }
-})
+});

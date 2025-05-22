@@ -10,6 +10,9 @@ import Home from '../components/Home.vue';
 import About from '../components/About.vue';
 import Events from '../components/Events.vue';
 import Catalogue from "../components/Catalogue.vue";
+import ReservationForm from "../components/ReservationForm.vue";
+
+import AdminEvents from "../components/AdminEvents.vue";
 
 const routes = [
     {
@@ -21,7 +24,8 @@ const routes = [
     {
         path: '/Dashboard',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
+        redirect: '/AdminEvents'
     },
     {
         path: '/DefaultLayout',
@@ -45,6 +49,13 @@ const routes = [
         component : Home,
     },
     {
+        path: '/reservation/:jeuId',
+        name: 'ReservationForm',
+        component : ReservationForm,
+        props: true
+    },
+
+    {
         path : '/About',
         name : 'About',
         component : About
@@ -53,6 +64,11 @@ const routes = [
         path : '/Events',
         name : 'Events',
         component : Events
+    },
+    {
+        path : '/AdminEvents',
+        name : 'AdminEvents',
+        component : AdminEvents
     },
     {
         path : '/Catalogue',
