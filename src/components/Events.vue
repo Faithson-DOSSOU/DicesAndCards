@@ -1,120 +1,110 @@
 <script>
 import axios from 'axios';
-
-import event from '../assets/png/events_bg.png';
-import event2 from '../assets/png/events_bg2.png';
 import chevronleft from '../assets/svg/chevron-left-svgrepo-com 2.svg';
 import chevronright from '../assets/svg/chevron-right-svgrepo-com 1.svg';
 
 export default {
-  name : 'Events',
+  name: 'Events',
   data() {
     return {
       eventlist: [],
-      currentEvent: null,
-      event,
-      event2,
+      currentIndex: 0,
       chevronleft,
-      chevronright,
-      dateDebut: new Date('2025-05-20'),
-      dateFin : new Date('2025-05-25')
+      chevronright
+    };
+  },
+  computed: {
+    currentEvent() {
+      return this.eventlist[this.currentIndex] || null;
     }
   },
   methods: {
     formatDate(date) {
-      return date.toLocaleDateString('fr-FR', {
-        //weekday: 'long',    // en option : "mardi"
+      return new Date(date).toLocaleDateString('fr-FR', {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric'
       });
+    },
+    previousEvent() {
+      if (this.eventlist.length > 0) {
+        this.currentIndex = (this.currentIndex - 1 + this.eventlist.length) % this.eventlist.length;
+      }
+    },
+    nextEvent() {
+      if (this.eventlist.length > 0) {
+        this.currentIndex = (this.currentIndex + 1) % this.eventlist.length;
+      }
+    },
+    inscrireAEvent() {
+      const idUtilisateur = this.$store?.state?.user?.id_utilisateur || localStorage.getItem('userId');
+      const idEvenement = this.currentEvent?.id_evenement;
+
+      if (!idUtilisateur) {
+        alert("Veuillez vous connecter pour vous inscrire.");
+        return;
+      }
+
+      axios.post('http://localhost:3000/api/evenements/inscription', {
+        id_utilisateur: idUtilisateur,
+        id_evenement: idEvenement
+      })
+          .then(() => {
+            alert("Inscription réussie !");
+          })
+          .catch(error => {
+            if (error.response?.status === 409) {
+              alert("Vous êtes déjà inscrit à cet événement.");
+            } else {
+              alert("Erreur lors de l'inscription.");
+            }
+          });
     }
   },
   mounted() {
-    axios.get('http://localhost:3000/api/evenements')
+    axios.get('http://localhost:3000/api/evenements/en-cours')
         .then(response => {
           this.eventlist = response.data;
         })
         .catch(error => {
-          console.error("Erreur lors du chargement des evenements :", error);
+          console.error("Erreur lors du chargement des événements en cours :", error);
         });
   }
 };
 </script>
 
+
 <template>
-  <div class="event-page main-container">
+  <div class="event-page main-container" v-if="currentEvent">
     <div class="event-page-wrapper">
       <div class="event-slider-container">
         <div class="event-slider">
           <div class="slider-image-wrapper">
-            <img class="event-cover" :src="event" alt="">
-          </div>
-          <div class="slider-image-wrapper">
-            <img class="event-cover" :src="event2" alt="">
+            <img class="event-cover" :src="currentEvent.image_path" :alt="currentEvent.titre" />
           </div>
         </div>
         <div class="chevron-nav">
-          <div class="slider-button right">
-            <img class="chevron-icon" :src="chevronleft" alt="">
+          <div class="slider-button right" @click="previousEvent">
+            <img class="chevron-icon" :src="chevronleft" alt="événement précédent" />
           </div>
-          <div class="slider-button left">
-            <img class="chevron-icon" :src="chevronright" alt="">
-          </div></div>
+          <div class="slider-button left" @click="nextEvent">
+            <img class="chevron-icon" :src="chevronright" alt="événement suivant" />
+          </div>
+        </div>
       </div>
-      <button class="inscription-button"><span>Inscrivez-vous</span></button>
+
+      <button class="inscription-button" @click="inscrireAEvent"><span>Inscrivez-vous</span></button>
+
       <div class="event-description">
-        <h2>Titre de l'évènement</h2><br>
-        <p>Du {{ formatDate(dateDebut) }}</p><br>
-        <p>Au {{ formatDate(dateFin) }}</p><br>
-        <p>Envie de rire, de découvrir de nouveaux jeux ou simplement de passer un bon moment en famille ou entre amis ? La Fête du Jeu est l’événement qu’il te faut !
-          <br>
-          <br>
-
-          👉 Au programme :
-          <br>
-          <br>
-          Jeux de société pour tous les âges : rapides, coopératifs, de stratégie, d’ambiance…
-          <br>
-          <br>
-
-          Jeux en bois géants en libre accès pour jouer autrement, dans la bonne humeur
-          <br>
-          <br>
-
-          Défis et mini-tournois avec petits lots à gagner pour les plus joueurs
-          <br>
-          <br>
-
-          Espace enfants dès 3 ans, avec des jeux adaptés et encadrés
-          <br>
-          <br>
-
-          Coin détente & café-jeux pour faire une pause tout en continuant à s’amuser
-          <br>
-          <br>
-
-          👋 Des animateurs passionnés seront là pour vous expliquer les règles, conseiller selon vos envies et surtout partager le plaisir du jeu.
-          <br>
-          <br>
-
-          🎉 Une ambiance conviviale, des découvertes, du fun — et c’est gratuit !
-          <br>
-          <br>
-
-          👨‍👩‍👧‍👦 Pour qui ? Tout le monde : enfants, ados, adultes, familles
-          <br>
-          <br>
-
-          🟡 Inscrivez-vous maintenant et rejoignez nous.
-          <br>
-          Rejoins-nous pour une journée où le jeu est roi !
-          <br>
-        </p>
+        <h2>{{ currentEvent.titre }}</h2><br>
+        <p>Du {{ formatDate(currentEvent.date_debut) }}</p><br>
+        <p>Au {{ formatDate(currentEvent.date_fin) }}</p><br>
+        <p v-html="currentEvent.description"></p>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 *{

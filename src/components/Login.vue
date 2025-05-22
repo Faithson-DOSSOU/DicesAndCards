@@ -63,7 +63,10 @@ export default {
         if (response.data && response.data.user) {
           this.userStore.setUser(response.data.user);
 
-          // Redirection conditionnelle selon le rôle
+          // ✅ Sauvegarde l'id utilisateur dans localStorage
+          localStorage.setItem('userId', response.data.user.id_utilisateur);
+
+          // Redirection selon le rôle
           if (response.data.user.role === 'admin') {
             this.router.push('/Dashboard');
           } else {
@@ -75,8 +78,8 @@ export default {
         console.error('Erreur login :', error?.response?.data || error);
       }
     }
-  }
-};
+  },
+}
 </script>
 
 <style scoped>

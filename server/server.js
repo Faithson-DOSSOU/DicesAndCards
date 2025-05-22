@@ -81,7 +81,7 @@ app.post('/api/login', async (req, res) => {
         res.status(200).json({
             message: 'Connexion réussie',
             user: {
-                id: user.id_utilisateur,
+                id_utilisateur: user.id_utilisateur,
                 nom: user.nom,
                 prenom: user.prenom,
                 email: user.email,
@@ -93,6 +93,7 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ message: 'Erreur serveur' });
     }
 });
+
 
 
 // Exemple de POST pour créer un utilisateur
@@ -144,6 +145,51 @@ app.get('/api/categories', async (req, res) => {
         res.status(500).json({ error: 'Erreur serveur' })
     }
 })
+
+// Récupérer les événements en cours
+app.get('/api/evenements/en-cours', async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT * FROM Evenement
+            WHERE statut = 'en_cours'
+            --  AND CURRENT_DATE() BETWEEN date_debut AND date_fin
+            ORDER BY date_debut ASC
+        `);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+app.post('/api/evenements/inscription', async (req, res) => {
+    const { id_utilisateur, id_evenement } = req.body;
+
+    try {
+        const [already] = await pool.query(
+            `SELECT 1 FROM est_inscrit WHERE id_utilisateur = ? AND id_evenement = ?`,
+            [id_utilisateur, id_evenement]
+        );
+
+        if (already.length > 0) {
+            return res.status(409).json({ message: 'Déjà inscrit à cet événement.' });
+        }
+
+        // Appel de la procédure stockée
+        await pool.query(
+            `CALL InscrireUtilisateurEvenement(?, ?)`,
+            [id_utilisateur, id_evenement]
+        );
+
+        res.status(201).json({ message: 'Inscription réussie via procédure.' });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Erreur serveur lors de l’inscription.' });
+    }
+});
+
+
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000
