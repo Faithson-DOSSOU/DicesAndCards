@@ -1,3 +1,5 @@
+import { defineStore } from 'pinia'
+
 export const useUserStore = defineStore('user', {
     persist: true, // 🔥 ceci active la persistance
 
