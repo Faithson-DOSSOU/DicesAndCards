@@ -24,14 +24,17 @@ export default {
       console.log("Sidebar toggled !");
     },
     filtrerJeux(filtres) {
-      axios.get('http://localhost:3000/api/jeux') // ou créer une route avec filtres si besoin
+      console.log("Filtres reçus dans Catalogue :", filtres); // 👈 Vérifie qu'il s'affiche
+      axios.post('http://localhost:3000/api/jeux/filtrés', {
+        categories: filtres.categories,
+        mecaniques: filtres.mecaniques
+      })
           .then(response => {
-            const all = response.data;
-            this.jeux = all.filter(jeu => {
-              const matchCat = filtres.categories.length === 0 || filtres.categories.includes(jeu.id_categorie);
-              const matchMeca = filtres.mecaniques.length === 0 || filtres.mecaniques.includes(jeu.id_mecanique);
-              return matchCat && matchMeca;
-            });
+            console.log("Jeux filtrés reçus :", response.data); // 👈 Important
+            this.jeux = response.data;
+          })
+          .catch(error => {
+            console.error("Erreur lors du filtrage :", error);
           });
     }
   },
@@ -83,7 +86,7 @@ export default {
   </div>
   <div class="catalog-body">
     <aside class="filter-sidebar">
-      <FilterSideBar :isVisible="showFilterSidebar" @filtreChange="filtrerJeux"/>
+      <FilterSideBar :isVisible="showFilterSidebar" @filtreChange="filtrerJeux" />
     </aside>
     <main class="main-catalog">
       <CatalogContent :jeux="jeux"/>

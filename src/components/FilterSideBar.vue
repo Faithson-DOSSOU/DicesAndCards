@@ -19,8 +19,14 @@ export default {
     }
   },
   watch: {
-    selectedCategories() { this.emitFilters(); },
-    selectedMecaniques() { this.emitFilters(); }
+    selectedCategories: {
+      handler() { this.emitFilters(); },
+      deep: true
+    },
+    selectedMecaniques: {
+      handler() { this.emitFilters(); },
+      deep: true
+    }
   },
   methods: {
     toggleDropdown(number){
@@ -28,6 +34,7 @@ export default {
       console.log("Dropdown", number, "toggled")
     },
     emitFilters() {
+      console.log("Filtres émis :", this.selectedCategories, this.selectedMecaniques);
       this.$emit('filtreChange', {
         categories: this.selectedCategories,
         mecaniques: this.selectedMecaniques

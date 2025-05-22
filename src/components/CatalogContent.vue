@@ -19,7 +19,10 @@ export default {
 
 <template>
   <div class="main-catalog-wrapper">
-    <div v-for="jeu in jeux" :key="jeu.id_jeu" class="jeu-card" @click="allerAReservation(jeu.id_jeu)">
+    <div v-if="jeux.length === 0" class="empty-message">
+      Aucun jeu trouvé.
+    </div>
+    <div v-else v-for="jeu in jeux" :key="jeu.id_jeu" class="jeu-card" @click="allerAReservation(jeu.id_jeu)">
       <img :src="jeu.image_path" :alt="jeu.nom" />
       <div class="jeu-info">
         <h3>{{ jeu.nom }}</h3>
