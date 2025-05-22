@@ -22,14 +22,52 @@ export default {
     sideBarToggle(message){
       this.showFilterSidebar= message;
       console.log("Sidebar toggled !");
-
+    },
+    filtrerJeux(filtres) {
+      axios.get('http://localhost:3000/api/jeux') // ou créer une route avec filtres si besoin
+          .then(response => {
+            const all = response.data;
+            this.jeux = all.filter(jeu => {
+              const matchCat = filtres.categories.length === 0 || filtres.categories.includes(jeu.id_categorie);
+              const matchMeca = filtres.mecaniques.length === 0 || filtres.mecaniques.includes(jeu.id_mecanique);
+              return matchCat && matchMeca;
+            });
+          });
+    }
+  },
+  watch: {
+    '$route.query.search': {
+      handler(newSearch) {
+        const search = newSearch?.toLowerCase() || '';
+        axios.get('http://localhost:3000/api/jeux')
+            .then(response => {
+              const allGames = response.data;
+              this.jeux = search
+                  ? allGames.filter(jeu =>
+                      jeu.nom.toLowerCase().includes(search)
+                  )
+                  : allGames;
+            })
+            .catch(error => {
+              console.error("Erreur lors du rechargement des jeux :", error);
+            });
+      },
+      immediate: true // 👈 Exécute le watcher une première fois au montage
     }
   },
   mounted() {
-    const query = this.$route.query.search;
+    const search = this.$route.query.search?.toLowerCase() || '';
+
     axios.get('http://localhost:3000/api/jeux')
         .then(response => {
-          this.jeux = response.data;
+          const allGames = response.data;
+          if (search) {
+            this.jeux = allGames.filter(jeu =>
+                jeu.nom.toLowerCase().includes(search)
+            );
+          } else {
+            this.jeux = allGames;
+          }
         })
         .catch(error => {
           console.error("Erreur lors du chargement des jeux :", error);
@@ -45,10 +83,10 @@ export default {
   </div>
   <div class="catalog-body">
     <aside class="filter-sidebar">
-      <FilterSideBar :isVisible="showFilterSidebar"/>
+      <FilterSideBar :isVisible="showFilterSidebar" @filtreChange="filtrerJeux"/>
     </aside>
     <main class="main-catalog">
-      <CatalogContent/>
+      <CatalogContent :jeux="jeux"/>
     </main>
   </div>
 </div>

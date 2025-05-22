@@ -1,21 +1,44 @@
 <script>
+import axios from "axios";
+
 import dropdown from '../assets/svg/chevron-up-svgrepo-com.svg';
 import dropdown2 from '../assets/svg/chevron-down-svgrepo-com.svg';
 export default {
   name: 'FilterSideBar',
   props: ['isVisible'],
+  emits: ['filtreChange'],
   data() {
     return {
       dropdown,
       dropdown2,
-      showDropdownContent: {1:true, 2:true}
+      showDropdownContent: {1:true, 2:true},
+      categories: [],
+      mecaniques: [],
+      selectedCategories: [],
+      selectedMecaniques: [],
     }
+  },
+  watch: {
+    selectedCategories() { this.emitFilters(); },
+    selectedMecaniques() { this.emitFilters(); }
   },
   methods: {
     toggleDropdown(number){
       this.showDropdownContent[number] = !this.showDropdownContent[number];
       console.log("Dropdown", number, "toggled")
+    },
+    emitFilters() {
+      this.$emit('filtreChange', {
+        categories: this.selectedCategories,
+        mecaniques: this.selectedMecaniques
+      });
     }
+  },
+  mounted() {
+    axios.get('http://localhost:3000/api/categories/top')
+        .then(res => this.categories = res.data);
+    axios.get('http://localhost:3000/api/mecaniques/top')
+        .then(res => this.mecaniques = res.data);
   }
 }
 </script>
@@ -31,25 +54,9 @@ export default {
       </div>
       <div v-if="showDropdownContent[1]">
         <form class="filter-form" action="">
-          <div class="form-element">
-            <input id="category-one" class="checkbox" type="checkbox">
-            <label for="category-one" class="checkbox-label">Category 1</label>
-          </div>
-          <div class="form-element">
-            <input id="category-two" class="checkbox" type="checkbox">
-            <label for="category-two" class="checkbox-label">Category 2</label>
-          </div>
-          <div  class="form-element">
-            <input id="category-three" class="checkbox" type="checkbox">
-            <label for="category-three" class="checkbox-label">Category 3</label>
-          </div>
-          <div class="form-element">
-            <input id="category-four" class="checkbox" type="checkbox">
-            <label for="category-four" class="checkbox-label">Category 4</label>
-          </div>
-          <div class="form-element">
-            <input id="category-five" class="checkbox" type="checkbox">
-            <label for="category-five" class="checkbox-label">Category 5</label>
+          <div v-for="cat in categories" :key="cat.id_categorie" class="form-element">
+            <input type="checkbox" :id="'cat-'+cat.id_categorie" :value="cat.id_categorie" v-model="selectedCategories">
+            <label :for="'cat-'+cat.id_categorie">{{ cat.nom }}</label>
           </div>
         </form>
       </div>
@@ -62,25 +69,9 @@ export default {
       </div>
       <div v-if="showDropdownContent[2]">
         <form class="filter-form" action="">
-          <div class="form-element">
-            <input id="mechanic-one" class="checkbox" type="checkbox">
-            <label for="mechanic-one" class="checkbox-label">Mechanique 1</label>
-          </div>
-          <div class="form-element">
-            <input id="mechanic-two" class="checkbox" type="checkbox">
-            <label for="mechanic-two" class="checkbox-label">Mécanique 2</label>
-          </div>
-          <div  class="form-element">
-            <input id="mechanic-three" class="checkbox" type="checkbox">
-            <label for="mechanic-three" class="checkbox-label">Mécanique 3</label>
-          </div>
-          <div class="form-element">
-            <input id="mechanic-four" class="checkbox" type="checkbox">
-            <label for="mechanic-four" class="checkbox-label">Mécanique 4</label>
-          </div>
-          <div class="form-element">
-            <input id="mechanic-five" class="checkbox" type="checkbox">
-            <label for="mechanic-five" class="checkbox-label">Mécanique 5</label>
+          <div v-for="meca in mecaniques" :key="meca.id_mecanique" class="form-element">
+            <input type="checkbox" :id="'mec-'+meca.id_mecanique" :value="meca.id_mecanique" v-model="selectedMecaniques">
+            <label :for="'mec-'+meca.id_mecanique">{{ meca.nom }}</label>
           </div>
         </form>
       </div>

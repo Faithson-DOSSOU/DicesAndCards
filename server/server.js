@@ -274,6 +274,26 @@ app.put('/api/evenements/:id/terminer', async (req, res) => {
     }
 });
 
+app.get('/api/categories/top', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM Categorie LIMIT 10');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+app.get('/api/mecaniques/top', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM Mecanique LIMIT 10');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000

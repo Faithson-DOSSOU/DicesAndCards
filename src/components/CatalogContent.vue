@@ -3,25 +3,17 @@ import axios from 'axios';
 
 export default {
   name: 'CatalogContent',
-  data() {
-    return {
-      jeux: [],
-    };
+  props: {
+    jeux: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
     allerAReservation(idJeu) {
       this.$router.push(`/reservation/${idJeu}`);
     }
   },
-  mounted() {
-    axios.get('http://localhost:3000/api/jeux')
-        .then(response => {
-          this.jeux = response.data;
-        })
-        .catch(error => {
-          console.error("Erreur lors du chargement des jeux :", error);
-        });
-  }
 }
 </script>
 
