@@ -44,6 +44,7 @@ export default {
   props: ['jeuId'],
   data() {
     return {
+      userStore: useUserStore(), // ✅ instancié une seule fois ici
       jeu: {},
       tables: [],
       id_table: '',
@@ -68,9 +69,7 @@ export default {
   },
   methods: {
     async reserverJeu() {
-      const userStore = useUserStore();
-
-      if (!userStore.id_utilisateur) {
+      if (!this.userStore.id_utilisateur) {
         this.message = "Utilisateur non connecté.";
         this.erreur = true;
         return;
@@ -78,7 +77,7 @@ export default {
 
       try {
         await axios.post('http://localhost:3000/api/reserver', {
-          id_utilisateur: userStore.id_utilisateur,
+          id_utilisateur: this.userStore.id_utilisateur,
           id_jeu: this.jeuId,
           id_table: this.id_table,
           date_debut: this.date_debut,
@@ -163,5 +162,4 @@ button:hover {
   margin-bottom: 20px;
   color: #444;
 }
-
 </style>

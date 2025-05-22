@@ -202,7 +202,7 @@ app.get('/api/evenements/en-cours', async (req, res) => {
         const [rows] = await pool.query(`
             SELECT * FROM Evenement
             WHERE statut = 'en_cours'
-            --  AND CURRENT_DATE() BETWEEN date_debut AND date_fin
+              AND CURRENT_DATE() BETWEEN date_debut AND date_fin
             ORDER BY date_debut ASC
         `);
         res.json(rows);
@@ -211,6 +211,21 @@ app.get('/api/evenements/en-cours', async (req, res) => {
         res.status(500).json({ error: 'Erreur serveur' });
     }
 });
+
+app.get('/api/admin/evenements', async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT * FROM Evenement
+            WHERE statut IN ('à_venir', 'en_cours')
+            ORDER BY date_debut ASC
+        `);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
 
 app.post('/api/evenements/inscription', async (req, res) => {
     const { id_utilisateur, id_evenement } = req.body;
@@ -239,6 +254,25 @@ app.post('/api/evenements/inscription', async (req, res) => {
     }
 });
 
+app.put('/api/evenements/:id/terminer', async (req, res) => {
+    const id_evenement = req.params.id;
+
+    try {
+        const [result] = await pool.query(
+            `UPDATE Evenement SET statut = 'termine' WHERE id_evenement = ?`,
+            [id_evenement]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Événement non trouvé' });
+        }
+
+        res.status(200).json({ message: 'Événement marqué comme terminé' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erreur lors de la suppression (logique) de l’événement.' });
+    }
+});
 
 
 // Démarrage du serveur
