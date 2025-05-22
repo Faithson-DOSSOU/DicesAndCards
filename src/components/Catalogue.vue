@@ -24,6 +24,15 @@ export default {
 
     }
   },
+  mounted() {
+    axios.get('http://localhost:3000/api/jeux')
+        .then(response => {
+          this.jeux = response.data;
+        })
+        .catch(error => {
+          console.error("Erreur lors du chargement des jeux :", error);
+        });
+  }
 };
 </script>
 

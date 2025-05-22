@@ -2,10 +2,11 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        role: 'player',
+        id_utilisateur: null,
         nom: '',
         prenom: '',
-        email: ''
+        email: '',
+        role: 'player'
     }),
 
     getters: {
@@ -17,8 +18,8 @@ export const useUserStore = defineStore('user', {
             this.role = newRole
         },
 
-        // ✅ Nouvelle méthode pour tout enregistrer depuis le backend
         setUser(user) {
+            this.id_utilisateur = user.id
             this.nom = user.nom
             this.prenom = user.prenom
             this.email = user.email
