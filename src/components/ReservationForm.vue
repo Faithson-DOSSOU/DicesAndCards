@@ -1,39 +1,43 @@
 <template>
-  <div class="reservation-container">
-    <h2>Réservation pour le jeu : {{ jeu.nom }}</h2>
+  <div class="reservation-wrapper">
+    <h1 class="title">RÉSERVATION</h1>
+    <p class="jeu-name">Pour le jeu : <strong>{{ jeu.nom }}</strong></p>
 
-    <form @submit.prevent="reserverJeu">
-      <div class="form-group">
-        <label for="table">Choisissez une table :</label>
+    <form class="form-layout" @submit.prevent="reserverJeu">
+      <div class="form-row">
+        <label>Table</label>
         <select v-model="id_table" required>
-          <option disabled value="">-- Choisir une table --</option>
+          <option disabled value="">Choisissez une table...</option>
           <option v-for="table in tables" :key="table.id_table" :value="table.id_table">
-            Table #{{ table.id_table }} - Capacité : {{ table.nbre_places }}
+            Table No{{ table.id_table }} — {{ table.nbre_places }} places
           </option>
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="date">Date et heure de début :</label>
+      <div class="form-row">
+        <label>Date et heure de début</label>
         <input type="datetime-local" v-model="date_debut" required />
       </div>
 
-      <div class="form-group">
-        <label for="date">Date et heure de fin :</label>
+      <div class="form-row">
+        <label>Date et heure de fin</label>
         <input type="datetime-local" v-model="date_fin" required />
       </div>
 
-      <button type="submit">Confirmer la réservation</button>
-    </form>
+      <div class="form-footer">
+        <button type="submit">Réserver</button>
+      </div>
 
-    <p v-if="message" :style="{ color: erreur ? 'red' : 'green' }">{{ message }}</p>
+      <p v-if="message" :style="{ color: erreur ? 'red' : 'green', marginTop: '10px' }">
+        {{ message }}
+      </p>
+    </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { useUserStore } from '../stores/user'; // adapte le chemin si nécessaire
-
+import { useUserStore } from '../stores/user';
 
 export default {
   name: 'ReservationForm',
@@ -49,22 +53,16 @@ export default {
       erreur: false,
     };
   },
-  computed: {
-    utilisateur_id() {
-      const store = useUserStore();
-      return store.nom ? store : null;
-    }
-  },
   async mounted() {
     try {
       const [jeuRes, tableRes] = await Promise.all([
         axios.get(`http://localhost:3000/api/jeux/${this.jeuId}`),
-        axios.get('http://localhost:3000/api/tables')
+        axios.get('http://localhost:3000/api/tables'),
       ]);
       this.jeu = jeuRes.data;
       this.tables = tableRes.data;
     } catch (err) {
-      this.message = "Erreur lors du chargement des données";
+      this.message = "Erreur lors du chargement.";
       this.erreur = true;
     }
   },
@@ -72,7 +70,7 @@ export default {
     async reserverJeu() {
       const userStore = useUserStore();
 
-      if (!userStore.nom) {
+      if (!userStore.id_utilisateur) {
         this.message = "Utilisateur non connecté.";
         this.erreur = true;
         return;
@@ -80,14 +78,14 @@ export default {
 
       try {
         await axios.post('http://localhost:3000/api/reserver', {
-          id_utilisateur: userStore.id_utilisateur, // ⚠️ à ajouter dans ton store si pas présent
+          id_utilisateur: userStore.id_utilisateur,
           id_jeu: this.jeuId,
           id_table: this.id_table,
           date_debut: this.date_debut,
           date_fin: this.date_fin
         });
 
-        this.message = "Réservation confirmée !";
+        this.message = "Réservation confirmée.";
         this.erreur = false;
       } catch (error) {
         this.message = error.response?.data?.message || "Erreur lors de la réservation.";
@@ -99,38 +97,71 @@ export default {
 </script>
 
 <style scoped>
-.reservation-container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  background: #fefefe;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.reservation-wrapper {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
 }
-.form-group {
-  margin-bottom: 15px;
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
 }
+
+.form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
 label {
-  display: block;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
+
 input,
 select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #ccc;
+  border-radius: 6px;
 }
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
 button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
+  background-color: #222;
+  color: #fff;
+  padding: 10px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
 }
+
 button:hover {
-  background-color: #45a049;
+  background-color: #444;
 }
+
+.jeu-name {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
 </style>
