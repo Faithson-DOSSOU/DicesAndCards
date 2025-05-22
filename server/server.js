@@ -274,6 +274,58 @@ app.put('/api/evenements/:id/terminer', async (req, res) => {
     }
 });
 
+app.get('/api/categories/top', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM Categorie LIMIT 10');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+app.get('/api/mecaniques/top', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM Mecanique LIMIT 10');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
+
+app.post('/api/jeux/filtrés', async (req, res) => {
+    const { categories, mecaniques } = req.body;
+
+    try {
+        let query = `
+            SELECT DISTINCT j.*
+            FROM Jeu j
+                     LEFT JOIN appartient a ON j.id_jeu = a.id_jeu
+                     LEFT JOIN utilise u ON j.id_jeu = u.id_jeu
+            WHERE 1=1
+        `;
+        const params = [];
+
+        if (categories.length > 0) {
+            query += ` AND a.id_categorie IN (${categories.map(() => '?').join(',')})`;
+            params.push(...categories);
+        }
+
+        if (mecaniques.length > 0) {
+            query += ` AND u.id_mecanique IN (${mecaniques.map(() => '?').join(',')})`;
+            params.push(...mecaniques);
+        }
+
+        const [rows] = await pool.query(query, params);
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erreur lors du filtrage des jeux' });
+    }
+});
+
+
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000

@@ -3,31 +3,26 @@ import axios from 'axios';
 
 export default {
   name: 'CatalogContent',
-  data() {
-    return {
-      jeux: [],
-    };
+  props: {
+    jeux: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
     allerAReservation(idJeu) {
       this.$router.push(`/reservation/${idJeu}`);
     }
   },
-  mounted() {
-    axios.get('http://localhost:3000/api/jeux')
-        .then(response => {
-          this.jeux = response.data;
-        })
-        .catch(error => {
-          console.error("Erreur lors du chargement des jeux :", error);
-        });
-  }
 }
 </script>
 
 <template>
   <div class="main-catalog-wrapper">
-    <div v-for="jeu in jeux" :key="jeu.id_jeu" class="jeu-card" @click="allerAReservation(jeu.id_jeu)">
+    <div v-if="jeux.length === 0" class="empty-message">
+      Aucun jeu trouvé.
+    </div>
+    <div v-else v-for="jeu in jeux" :key="jeu.id_jeu" class="jeu-card" @click="allerAReservation(jeu.id_jeu)">
       <img :src="jeu.image_path" :alt="jeu.nom" />
       <div class="jeu-info">
         <h3>{{ jeu.nom }}</h3>
