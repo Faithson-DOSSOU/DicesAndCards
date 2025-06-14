@@ -6,6 +6,7 @@ export default {
 </script>
 
 <template>
+<h1/>Equipe de bosseur<h1>
 </template>
 
 <style scoped>
